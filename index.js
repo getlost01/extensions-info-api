@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import connectdb from './config/db.js';
+// -----------Routes---------------
+import dateCollect from "./APIs/dataCollect.js";
+// --------------------------------
 import * as dotenv from 'dotenv'; 
 dotenv.config();
 
@@ -15,7 +18,7 @@ app.listen(process.env.PORT || 8080, function(){
 });
 
 // routes
-
+app.use("/api/collect", dateCollect);
 
 
 
