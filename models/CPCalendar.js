@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const collectDataSchema = new Schema({
-	Day: { type: String, required: true },
-    TotalVistor: { type: Number, required: true , default: 0},
-    UniqueVisitor: { type: Number, required: true , default: 0},
-    MacUser: { type: Number, required: true , default: 0},
-    WindowUser: { type: Number, required: true , default: 0},
-    LinuxUser: { type: Number, required: true , default: 0},
-    Countries: [Schema.Types.Mixed],
-    NewUser: { type: Number, required: true , default: 0},
+	day: { type: String, required: true },
+    totalVistor: { type: Number, required: true , default: 0},
+    uniqueVisitor: { type: Number, required: true , default: 0},
+    macUser: { type: Number, required: true , default: 0},
+    windowUser: { type: Number, required: true , default: 0},
+    linuxUser: { type: Number, required: true , default: 0},
+    userID: { type: [String], required: true , default: []},
+    newUser: { type: Number, required: true , default: 0},
 	createdAt: String
 });
 
