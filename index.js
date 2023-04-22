@@ -22,6 +22,6 @@ app.use("/api/collect", dateCollect);
 
 
 app.get('*', (req, res)=>{
-    res.render("Page not found! 404");
+    res.send({'404': "Page not found!"});
 });
 
