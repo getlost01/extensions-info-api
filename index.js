@@ -21,4 +21,7 @@ app.listen(process.env.PORT || 8080, function(){
 app.use("/api/collect", dateCollect);
 
 
+app.get('*', (req, res)=>{
+    res.render("Page not found! 404");
+});
 
