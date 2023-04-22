@@ -8,9 +8,9 @@ const collectDataSchema = new Schema({
     macUser: { type: Number, required: true , default: 0},
     windowUser: { type: Number, required: true , default: 0},
     linuxUser: { type: Number, required: true , default: 0},
-    userIDs: { type: [Schema.Types.Mixed], required: true , default: {}},
+    userIDs: { type: Schema.Types.Mixed, required: true , default: {}},
     newUser: { type: Number, required: true , default: 0},
-	createdAt: String
+	createdAt: { type: Date, default: Date.now }
 });
 
 export default mongoose.model("SiteSaver", collectDataSchema);
