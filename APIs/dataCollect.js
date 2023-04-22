@@ -1,6 +1,8 @@
 import express from "express";
 import os from "os";
-import  CPCalendar from "../models/CPCalendar.js";
+import CPCalendar from "../models/CPCalendar.js";
+import ColorDropper from "../models/ColorDropper.js";
+import SiteSaver from "../models/SiteSaver.js";
 import User from "../models/users.js";
 const router = express.Router();
 import axios from 'axios';
@@ -70,19 +72,48 @@ router.post("/", async (req, res) => {
 			}
 		}
 
+		else if(reqData.extension === "ColorDropper"){
+			let todaysData = await ColorDropper.findOne({ day: `${reqData.day}`});
+			if(todaysData){
+
+				if(todaysData.userIDs[reqData.userID]){
+					todaysData.userIDs[reqData.userID]++;
+				}else{
+					todaysData.userIDs[reqData.userID] = 1;
+				}
+
+				ColorDropper.updateOne({ day: `${reqData.day}`},{
+						totalVistor: todaysData.totalVistor + 1,
+						uniqueVisitor: todaysData.totalVistor + ((reqData.isUnique)?1:0),
+						macUser: todaysData.macUser + ((userOS == "Darwin")?1:0),
+						windowUser: todaysData.windowUser + ((userOS == "Windows_NT")?1:0),
+						linuxUser: todaysData.linuxUser + ((userOS == "Linux")?1:0),
+						newUser: todaysData.newUser + ((reqData.isNewUser)?1:0),
+						userIDs: todaysData.userIDs
+					},function (err) {
+					    if (err){console.log(err);} 
+				});
+			}else{
+
+				var userIDs = {};
+				userIDs[reqData.userID] = 1;
+
+				await new ColorDropper({
+					day: reqData.day,
+					totalVistor: 1,
+					uniqueVisitor: 1,
+					macUser: ((userOS == "Darwin")?1:0),
+					windowUser: ((userOS == "Windows_NT")?1:0),
+				    linuxUser: ((userOS == "Linux")?1:0),
+					newUser: ((reqData.isNewUser)?1:0),
+					userIDs: userIDs,
+				  }).save();
+			}
+		}
+		
 
 
-
-       
-// ;		let todaysData = await CollectData.findOne({ day: `${reqData.day}`});
-// 		if(todaysData){
-//             updateData(todaysData,reqData);
-// 			CollectData.updateOne({id: reqData.id},{...ele},function (err) {
-// 			    if (err){console.log(err);} 
-// 			});
-// 		}else
-// 			await new CollectData({ ...ele}).save();
-		res.send("ok");
+		res.status(200).send({ message: "ok working" });
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ message: "Internal Server Error" });
