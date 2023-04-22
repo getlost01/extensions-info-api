@@ -111,6 +111,44 @@ router.post("/", async (req, res) => {
 			}
 		}
 		
+		else if(reqData.extension === "SiteSaver"){
+			let todaysData = await SiteSaver.findOne({ day: `${reqData.day}`});
+			if(todaysData){
+
+				if(todaysData.userIDs[reqData.userID]){
+					todaysData.userIDs[reqData.userID]++;
+				}else{
+					todaysData.userIDs[reqData.userID] = 1;
+				}
+
+				SiteSaver.updateOne({ day: `${reqData.day}`},{
+						totalVistor: todaysData.totalVistor + 1,
+						uniqueVisitor: todaysData.totalVistor + ((reqData.isUnique)?1:0),
+						macUser: todaysData.macUser + ((userOS == "Darwin")?1:0),
+						windowUser: todaysData.windowUser + ((userOS == "Windows_NT")?1:0),
+						linuxUser: todaysData.linuxUser + ((userOS == "Linux")?1:0),
+						newUser: todaysData.newUser + ((reqData.isNewUser)?1:0),
+						userIDs: todaysData.userIDs
+					},function (err) {
+					    if (err){console.log(err);} 
+				});
+			}else{
+
+				var userIDs = {};
+				userIDs[reqData.userID] = 1;
+
+				await new SiteSaver({
+					day: reqData.day,
+					totalVistor: 1,
+					uniqueVisitor: 1,
+					macUser: ((userOS == "Darwin")?1:0),
+					windowUser: ((userOS == "Windows_NT")?1:0),
+				    linuxUser: ((userOS == "Linux")?1:0),
+					newUser: ((reqData.isNewUser)?1:0),
+					userIDs: userIDs,
+				  }).save();
+			}
+		}
 
 
 		res.status(200).send({ message: "ok working" });
