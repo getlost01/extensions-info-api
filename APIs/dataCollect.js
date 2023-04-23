@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
 
 				CPCalendar.updateOne({ day: `${reqData.day}`},{
 						totalVistor: todaysData.totalVistor + 1,
-						uniqueVisitor: todaysData.totalVistor + ((reqData.isUnique)?1:0),
+						uniqueVisitor: todaysData.uniqueVisitor + ((reqData.isUnique)?1:0),
 						macUser: todaysData.macUser + ((userOS == "Darwin")?1:0),
 						windowUser: todaysData.windowUser + ((userOS == "Windows_NT")?1:0),
 						linuxUser: todaysData.linuxUser + ((userOS == "Linux")?1:0),
@@ -84,7 +84,7 @@ router.post("/", async (req, res) => {
 
 				ColorDropper.updateOne({ day: `${reqData.day}`},{
 						totalVistor: todaysData.totalVistor + 1,
-						uniqueVisitor: todaysData.totalVistor + ((reqData.isUnique)?1:0),
+						uniqueVisitor: todaysData.uniqueVisitor + ((reqData.isUnique)?1:0),
 						macUser: todaysData.macUser + ((userOS == "Darwin")?1:0),
 						windowUser: todaysData.windowUser + ((userOS == "Windows_NT")?1:0),
 						linuxUser: todaysData.linuxUser + ((userOS == "Linux")?1:0),
@@ -123,7 +123,7 @@ router.post("/", async (req, res) => {
 
 				SiteSaver.updateOne({ day: `${reqData.day}`},{
 						totalVistor: todaysData.totalVistor + 1,
-						uniqueVisitor: todaysData.totalVistor + ((reqData.isUnique)?1:0),
+						uniqueVisitor: todaysData.uniqueVisitor + ((reqData.isUnique)?1:0),
 						macUser: todaysData.macUser + ((userOS == "Darwin")?1:0),
 						windowUser: todaysData.windowUser + ((userOS == "Windows_NT")?1:0),
 						linuxUser: todaysData.linuxUser + ((userOS == "Linux")?1:0),
