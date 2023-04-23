@@ -19,14 +19,7 @@ app.listen(process.env.PORT || 8080, function(){
 });
 
 // --------------Vercel------------
-inject({
-    beforeSend: (event) => {
-      if (event.url.includes('/private')) {
-        return null;
-      }
-      return event;
-    },
-});
+inject();
 // --------------------------------
 
 // routes
