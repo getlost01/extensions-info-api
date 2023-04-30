@@ -188,7 +188,7 @@ router.get("/test", async (req, res) => {
 		  const ipAddress = getClientIp(req);
 		  console.log(('Got IP address: ' + ipAddress));
 		  
-		res.status(200).send({ message: "ok working" });
+		res.status(200).send({ message: "ok working", osType, ipAddress});
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ message: "Internal Server Error" });
