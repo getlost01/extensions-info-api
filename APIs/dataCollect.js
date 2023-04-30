@@ -1,5 +1,7 @@
 import express from "express";
 import os from "os";
+import useragent from 'useragent';
+import ipinfo from 'ipinfo';
 import CPCalendar from "../models/CPCalendar.js";
 import ColorDropper from "../models/ColorDropper.js";
 import SiteSaver from "../models/SiteSaver.js";
@@ -9,7 +11,16 @@ import axios from 'axios';
 import * as dotenv from 'dotenv'; 
 dotenv.config();
 
+const ipinfoClient = new ipinfo(process.env.IPKEY);
 
+
+function getClientIp(req) {
+	const ipAddress = req.headers['x-forwarded-for'] ||
+	  req.connection.remoteAddress ||
+	  req.socket.remoteAddress ||
+	  (req.connection.socket ? req.connection.socket.remoteAddress : null);
+	return ipAddress;
+  }
 
 router.post("/", async (req, res) => {
 	try {
@@ -152,6 +163,32 @@ router.post("/", async (req, res) => {
 
 
 		res.status(200).send({ message: "ok working" });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+});
+
+router.get("/test", async (req, res) => {
+	try {
+		const userAgentString = req.headers['user-agent'];
+		const userAgent = useragent.parse(userAgentString);
+		const osType = userAgent.os.family.toLowerCase();
+
+		  if (osType.includes('linux')) {
+			console.log('Client OS type: Linux');
+		  } else if (osType.includes('mac')) {
+			console.log('Client OS type: Mac');
+		  } else if (osType.includes('windows')) {
+			console.log('Client OS type: Windows');
+		  } else {
+			console.log('Unknown OS type');
+		  }
+		  
+		  const ipAddress = getClientIp(req);
+		  console.log(('Got IP address: ' + ipAddress));
+		  
+		res.status(200).send({ message: "ok working", osType, ipAddress});
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ message: "Internal Server Error" });
