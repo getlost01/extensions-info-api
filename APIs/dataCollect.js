@@ -188,7 +188,14 @@ router.get("/test", async (req, res) => {
 		  const ipAddress = getClientIp(req);
 		  console.log(('Got IP address: ' + ipAddress));
 		  
-		res.status(200).send({ message: "ok working", osType, ipAddress});
+		  axios(`https://ipinfo.io/${ipAddress}?token=${process.env.IPKEY}`)
+			.then(async (response) => {
+				res.status(200).send({ message: "ok working", osType, ipAddress, data: response.data});
+			})
+			.catch(function (err) {
+				console.log("Unable to fetch ip 📲", err);
+		  });
+		//   res.status(200).send({ message: "ok working", osType, ipAddress});
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ message: "Internal Server Error" });
