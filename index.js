@@ -4,6 +4,8 @@ import { inject } from '@vercel/analytics';
 import connectdb from './config/db.js';
 // -----------Routes---------------
 import dateCollect from "./APIs/dataCollect.js";
+import reviewCollect from "./APIs/reviewCollect.js";
+import opinion from "./APIs/opinion.js";
 // --------------------------------
 import * as dotenv from 'dotenv'; 
 dotenv.config();
@@ -24,7 +26,8 @@ inject();
 
 // routes
 app.use("/api/collect", dateCollect);
-
+app.use("/api/reviews", reviewCollect);
+app.use("/api/opinion", opinion);
 
 app.get('*', (req, res)=>{
     res.send({'404': "Page not found!"});
