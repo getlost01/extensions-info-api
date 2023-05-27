@@ -10,7 +10,9 @@ const collectDataSchema = new Schema({
     country: { type: String, required: false },
     postal: { type: String, required: false },
     timezone: { type: String, required: false },
+    active: { type:Boolean, default: true},
     fullData: Schema.Types.Mixed,
+    inactiveAt: { type: Date },
 	createdAt: { type: Date, default: Date.now }
 });
 

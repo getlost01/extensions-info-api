@@ -162,5 +162,93 @@ router.post("/", async (req, res) => {
 	}
 });
 
+router.post("/inactive", async (req, res) => {
+	try {
+		const reqData = req.body;
+		let userData = await User.findOne({ userID: reqData.userID });
+        if(userData){
+			User.updateOne({ userID: reqData.userID },{
+				inactiveAt: new Date(),
+				active: false
+			},function (err) { if (err){console.log(err);}});
+
+			if(reqData.extension === "CPCalendar"){
+				let todaysData = await CPCalendar.findOne({ day: `${reqData.day}`});
+				if(todaysData){
+					todaysData.uninstallIDs[reqData.userID] = true;
+					++todaysData.uninstall;
+					CPCalendar.updateOne({ day: `${reqData.day}`}, 
+						todaysData
+					,function (err) {
+							if (err){console.log(err);} 
+					});
+				}else{
+					var payload = {
+						day: reqData.day,
+						uninstall: 1,
+						uninstallIDs: {}
+					}
+					payload.uninstallIDs[reqData.userID] = true;
+					await new CPCalendar(
+						payload
+					).save();
+				}
+			}
+
+			else if(reqData.extension === "SiteSaver"){
+				let todaysData = await SiteSaver.findOne({ day: `${reqData.day}`});
+				if(todaysData){
+					todaysData.uninstallIDs[reqData.userID] = true;
+					++todaysData.uninstall;
+					SiteSaver.updateOne({ day: `${reqData.day}`}, 
+						todaysData
+					,function (err) {
+							if (err){console.log(err);} 
+					});
+				}else{
+					var payload = {
+						day: reqData.day,
+						uninstall: 1,
+						uninstallIDs: {}
+					}
+					payload.uninstallIDs[reqData.userID] = true;
+					await new SiteSaver(
+						payload
+					).save();
+				}
+			}
+
+			else if(reqData.extension === "ColorDropper"){
+				let todaysData = await ColorDropper.findOne({ day: `${reqData.day}`});
+				if(todaysData){
+					todaysData.uninstallIDs[reqData.userID] = true;
+					++todaysData.uninstall;
+					ColorDropper.updateOne({ day: `${reqData.day}`}, 
+						todaysData
+					,function (err) {
+							if (err){console.log(err);} 
+					});
+				}else{
+					var payload = {
+						day: reqData.day,
+						uninstall: 1,
+						uninstallIDs: {}
+					}
+					payload.uninstallIDs[reqData.userID] = true;
+					await new ColorDropper(
+						payload
+					).save();
+				}
+			}
+
+		}
+
+		res.status(200).send({ message: "ok working", error: false });
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ message: "Internal Server Error", error: true });
+	}
+});
+
 
 export default router;
