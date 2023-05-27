@@ -10,6 +10,8 @@ const collectDataSchema = new Schema({
     linuxUser: { type: Number, required: true , default: 0},
     userIDs: { type: Schema.Types.Mixed, required: true , default: {}},
     newUser: { type: Number, required: true , default: 0},
+    uninstall: { type: Number, required: true , default: 0},
+    uninstallIDs: { type: Schema.Types.Mixed, required: true , default: {}},
 	createdAt: { type: Date, default: Date.now }
 });
 
