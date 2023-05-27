@@ -154,6 +154,10 @@ router.post("/", async (req, res) => {
 			}
 		}
 
+		else{
+			return 	res.status(404).send({ message: "Invalid Extension Name", error: true });
+		}
+
 
 		res.status(200).send({ message: "ok working" });
 	} catch (error) {
@@ -241,6 +245,14 @@ router.post("/inactive", async (req, res) => {
 				}
 			}
 
+			else{
+				return 	res.status(404).send({ message: "Invalid Extension Name", error: true });
+			}
+
+		}
+
+		else{
+			return 	res.status(404).send({ message: "User Not Found", error: true });
 		}
 
 		res.status(200).send({ message: "ok working", error: false });
